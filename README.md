@@ -3,11 +3,7 @@ iSender is a very light tool writed with Golang, which can imitate to send reque
 It will be very helpful when you do some benchmark test for your server
 
 ## Usage
-Download [iSender](./iSender), place it in some proper directoey. For example:
-```
-cd /tmp
-wget https://github.com/DingHub/iSender/iSender
-```
+Download [iSender](./iSender), place it in some proper directoey(eg. /tmp)<br>
 Firstly, we must add executable permissions for iSender
 ```
 chmod +x iSender
