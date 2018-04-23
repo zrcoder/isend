@@ -1,5 +1,5 @@
 package main
-
+ 
 import (
 	"sync/atomic"
 	"fmt"
@@ -8,23 +8,23 @@ import (
 	"os"
 	"io/ioutil"
 	"encoding/json"
-	"github.com/DingHub/iSender/util"
+	"iSender/util"
 )
-
+ 
 var succeded uint64
 var sendedRequests uint64
-
+ 
 func main() {
-	fmt.Println("Begin-- threads:", util.Input.Threads, " requests for every thread:", util.Input.Requests)
+	fmt.Println("Begin-- threads:", util.Input.Threads, ", requests for every thread:", util.Input.Requests)
 	for i:=uint64(0); i<util.Input.Threads; i++ {
 		go request()
 	}
 	for atomic.LoadUint64(&sendedRequests) < util.Input.Threads * util.Input.Requests {
 		time.Sleep(time.Second)
 	}
-	fmt.Println("End-- sended requests:", atomic.LoadUint64(&sendedRequests), "succed:", atomic.LoadUint64(&succeded))
+	fmt.Println("End-- sended requests:", atomic.LoadUint64(&sendedRequests), ", succed:", atomic.LoadUint64(&succeded))
 }
-
+ 
 func request() {
 	for i:=uint64(0); i < util.Input.Requests; i++ {
 		var client *util.Client
@@ -53,7 +53,7 @@ func request() {
 				os.Exit(1)
 			}
 		}
-
+ 
 		request, err := util.NewRequest(util.Input.Method, util.Input.Url, body, headers)
 		if err != nil {
 			fmt.Println(err)
