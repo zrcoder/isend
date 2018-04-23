@@ -24,7 +24,7 @@ func init() {
 
 	flag.StringVar(&Input.Method, "X", "GET", "method for your request")
 	flag.StringVar(&Input.Url, "url", "", "url for your request")
-	flag.StringVar(&Input.Headers, "H", "", "headers for your request")
+	flag.StringVar(&Input.Headers, "H", "", "headers for your request, , json format required")
 	flag.StringVar(&Input.Body, "d", "", "body for your request")
 
 	flag.StringVar(&Input.Ca, "ca", "", "ca cert for https request")
