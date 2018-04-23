@@ -15,7 +15,7 @@ var succeded uint64
 var sendedRequests uint64
  
 func main() {
-	fmt.Println("Begin-- threads:", util.Input.Threads, ", requests for every thread:", util.Input.Requests)
+	fmt.Println("Begin-- threads:", util.Input.Threads, ", requests for each thread:", util.Input.Requests)
 	for i:=uint64(0); i<util.Input.Threads; i++ {
 		go request()
 	}
