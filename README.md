@@ -2,8 +2,26 @@
 iSender is a very light tool writed with Golang, which can imitate to send requests with threads<br>
 It will be very helpful when you do some benchmark test for your server
 
+## Download
+[iSender for Linux](./bin/linux/iSender)<br>
+
+or you can clone the source code under $GOPATH/src and build it to get the iSender binary fit for your platform
+
+## Examples
+```
+./iSender -url http://localhost:8080/test
+```
+```
+./iSender -thN 10 -url http://127.0.0.1:8080/test
+```
+```
+./iSender -rN 2 -X POST -url http://localhost:8080/test
+```
+```
+./iSender -thN 100 -rN 10 -t 1500 -X POST -H '{"Content-Type":"application/json"}' -d '{"someKey":"someValue"}' -url https://localhost:8080/test -ca ./ca.crt -cert ./client.crt -key ./client.key
+```
+
 ## Usage
-Download [iSender](./iSender), place it in some proper directory(eg. /tmp)<br>
 Firstly, we must add executable permission for iSender
 ```
 chmod +x iSender
@@ -15,7 +33,7 @@ You can type this line for help:
 and you will see something like below:
 ```
   -H string
-    	headers for your request
+    	headers for your request, json format required
   -X string
     	method for your request (default "GET")
   -ca string
@@ -34,27 +52,4 @@ and you will see something like below:
     	number of threads (default 1)
   -url string
     	url for your request
-```
-## Examples
-```
-./iSender -url https://github.com
-```
-```
-./iSender -thN 10 -url https://github.com
-```
-```
-./iSender -rN 2 -X POST -url https://github.com
-```
-```
-threads=100
-requests=10
-delay=1500
-heads='{"Content-Type":"application/json"}'
-body='{"someKey":"someValue"}'
-method=POST
-url=https://localhost:8080/test
-ca=./ca.crt
-cert=./client.crt
-key=./client.key
-./iSender -thN $threads -rN $requests -t $delay -H $headers -d $body -X $method -url $url -ca $ca -cert $cert -key $key
 ```
