@@ -1,5 +1,5 @@
 package util
-
+ 
 import (
 	"net/http"
 	"io/ioutil"
@@ -9,13 +9,13 @@ import (
 	"io"
 	"iSender/util/cache"
 )
-
+ 
 type Client struct {
 	client *http.Client
 }
-
+ 
 var certsCache = cache.NewWithCapacity(3)
-
+ 
 func NewClient() *Client {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
@@ -25,10 +25,13 @@ func NewClient() *Client {
 	client := Client{&http.Client{Transport: tr}}
 	return &client
 }
-
+ 
 func NewClientWithCaPath(caPath string) (*Client, error) {
 	if caContent, found := certsCache.Search(caPath); found {
-		return NewClinetWithCaContent(caContent)
+		if ca, ok := caContent.([]byte); ok {
+			return NewClinetWithCaContent(ca)
+		}
+		return nil, fmt.Errorf("content in chache is not []byte")
 	}
 	caContent, err := ioutil.ReadFile(caPath)
 	if err != nil {
@@ -37,8 +40,8 @@ func NewClientWithCaPath(caPath string) (*Client, error) {
 	certsCache.Add(caPath, caContent)
 	return NewClinetWithCaContent(caContent)
 }
-
-func NewClinetWithCaContent(caContent []byte) (*Client, error)  {
+ 
+func NewClinetWithCaContent(caContent []byte) (*Client, error) {
 	pool := x509.NewCertPool()
 	if !pool.AppendCertsFromPEM(caContent) {
 		return nil, fmt.Errorf("append cert from pem failed");
@@ -52,12 +55,12 @@ func NewClinetWithCaContent(caContent []byte) (*Client, error)  {
 	client := Client{&http.Client{Transport: tr}}
 	return &client, nil
 }
-
+ 
 func NewClientWithCertFiles(caPath, certPath, keyPath string) (*Client, error) {
-	var caContent, certContent, keyContent []byte
+	var caContent, certContent, keyContent cache.T
 	var err error
 	var found bool
-
+ 
 	if caContent, found = certsCache.Search(caPath); !found {
 		caContent, err = ioutil.ReadFile(caPath)
 		if err != nil {
@@ -79,9 +82,22 @@ func NewClientWithCertFiles(caPath, certPath, keyPath string) (*Client, error) {
 		}
 		certsCache.Add(keyPath, keyContent)
 	}
-	return NewClientWithCertsContent(caContent, certContent, keyContent)
+ 
+	ca, ok := caContent.([]byte)
+	if !ok {
+		return nil, fmt.Errorf("content in chache is not []byte")
+	}
+	cert, ok := certContent.([]byte)
+	if !ok {
+		return nil, fmt.Errorf("content in chache is not []byte")
+	}
+	key, ok := keyContent.([]byte)
+	if !ok {
+		return nil, fmt.Errorf("content in chache is not []byte")
+	}
+	return NewClientWithCertsContent(ca, cert, key)
 }
-
+ 
 func NewClientWithCertsContent(caContent, certContent, keyContent []byte) (*Client, error) {
 	pool := x509.NewCertPool()
 	pool.AppendCertsFromPEM(caContent)
@@ -100,13 +116,13 @@ func NewClientWithCertsContent(caContent, certContent, keyContent []byte) (*Clie
 	Client := Client{&http.Client{Transport: tr}}
 	return &Client, nil
 }
-
+ 
 func NewRequest(method string, url string, body io.Reader, headers map[string]string) (*http.Request, error) {
 	req, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return nil, err
 	}
-
+ 
 	if headers != nil {
 		for headerName, value := range headers {
 			req.Header.Set(headerName, value)
@@ -114,7 +130,7 @@ func NewRequest(method string, url string, body io.Reader, headers map[string]st
 	}
 	return req, nil
 }
-
+ 
 func (c *Client) SendRequest(req *http.Request) (*http.Response, error) {
 	return c.client.Do(req)
 }
