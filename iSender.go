@@ -11,7 +11,7 @@ import (
 	"iSender/util"
 )
  
-var succeded uint64
+var succeeded uint64
 var sendedRequests uint64
  
 func main() {
@@ -22,7 +22,7 @@ func main() {
 	for atomic.LoadUint64(&sendedRequests) < util.Input.Threads * util.Input.Requests {
 		time.Sleep(time.Second)
 	}
-	fmt.Println("End-- sended requests:", atomic.LoadUint64(&sendedRequests), ", succed:", atomic.LoadUint64(&succeded))
+	fmt.Println("End-- sended requests:", atomic.LoadUint64(&sendedRequests), ", succeed:", atomic.LoadUint64(&succeeded))
 }
  
 func request() {
@@ -64,7 +64,7 @@ func request() {
 			fmt.Println("response code:", response.StatusCode)
 			resBody, _ := ioutil.ReadAll(response.Body)
 			fmt.Println("response body:",string(resBody))
-			atomic.AddUint64(&succeded, 1)
+			atomic.AddUint64(&succeeded, 1)
 		} else {
 			fmt.Println("err:", err)
 		}
