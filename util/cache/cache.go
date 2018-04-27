@@ -21,7 +21,7 @@ func NewWithCapacity(capacity int) *Cache {
 }
  
 // add an item, if the key is aready exist, returns false directly.
-func (p Cache) Add(key string, value T) (ok bool) {
+func (p *Cache) Add(key string, value T) (ok bool) {
 	if _, found := p.Search(key); found {
 		return false
 	}
@@ -38,7 +38,7 @@ func (p Cache) Add(key string, value T) (ok bool) {
 }
  
 // remove an item, if the key is not exist, returns false directly.
-func (p Cache) Remove(key string) (ok bool) {
+func (p *Cache) Remove(key string) (ok bool) {
 	if _, found := p.Search(key); !found {
 		return false
 	}
@@ -49,7 +49,7 @@ func (p Cache) Remove(key string) (ok bool) {
 }
  
 // replace an item, if the key is not exist, returns false directly.
-func (p Cache) Replace(key string, newValue T) (ok bool) {
+func (p *Cache) Replace(key string, newValue T) (ok bool) {
 	if _, found := p.Search(key); !found {
 		return false
 	}
@@ -59,7 +59,7 @@ func (p Cache) Replace(key string, newValue T) (ok bool) {
 	return true
 }
  
-func (p Cache) Search(key string) (value T, found bool) {
+func (p *Cache) Search(key string) (value T, found bool) {
 	p.rwMutex.RLock()
 	value, found = p.items[key]
 	p.rwMutex.RUnlock()
