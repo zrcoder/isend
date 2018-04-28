@@ -61,9 +61,8 @@ func request() {
 		}
 		response, err := client.SendRequest(request)
 		if err == nil {
-			fmt.Println("response code:", response.StatusCode)
 			resBody, _ := ioutil.ReadAll(response.Body)
-			fmt.Println("response body:",string(resBody))
+			fmt.Println("response CODE:", response.StatusCode, "; response BODY:",string(resBody))
 			atomic.AddUint64(&succeeded, 1)
 		} else {
 			fmt.Println("err:", err)
