@@ -7,7 +7,7 @@ import (
 	"crypto/x509"
 	"crypto/tls"
 	"io"
-	"iSender/util/cache"
+	"github.com/DingHub/iSender/util/cache"
 )
 
 type Client struct {
