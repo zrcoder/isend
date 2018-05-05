@@ -60,8 +60,12 @@ func request() {
 	for i := uint64(0); i < util.Input.Requests; i++ {
 		response, err := client.SendRequest(request)
 		if err == nil {
-			resBody, _ := ioutil.ReadAll(response.Body)
-			fmt.Println("response CODE:", response.StatusCode, "; response BODY:", string(resBody))
+			if util.Input.ShowDetail {
+				resBody, _ := ioutil.ReadAll(response.Body)
+				fmt.Println("response CODE:", response.StatusCode, "; response BODY:", string(resBody))
+			} else {
+				fmt.Println("response CODE:", response.StatusCode)
+			}
 			atomic.AddUint64(&succeeded, 1)
 		} else {
 			fmt.Println("error:", err)
