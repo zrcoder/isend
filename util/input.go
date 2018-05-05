@@ -7,18 +7,17 @@ import (
 )
 
 var Input = struct {
-	Threads  uint64
-	Requests uint64
-	Delay    uint64
-
-	Method  string
-	Url     string
-	Headers string
-	Body    string
-
-	Ca   string
-	Cert string
-	Key  string
+	Threads    uint64
+	Requests   uint64
+	Delay      uint64
+	Method     string
+	Url        string
+	Headers    string
+	Body       string
+	ShowDetail bool
+	Ca         string
+	Cert       string
+	Key        string
 }{}
 
 const (
@@ -38,6 +37,9 @@ const (
     	body for your request
   -url string
     	url for your request
+
+  -v bool
+    	print detail information
 
   -ca string
     	ca cert for https request
@@ -61,6 +63,8 @@ func init() {
 	flag.StringVar(&Input.Url, "url", "", "url for your request")
 	flag.StringVar(&Input.Headers, "H", "", "headers for your request, json format required")
 	flag.StringVar(&Input.Body, "d", "", "body for your request")
+
+	flag.BoolVar(&Input.ShowDetail, "v", false, "print detail information")
 
 	flag.StringVar(&Input.Ca, "ca", "", "ca cert for https request")
 	flag.StringVar(&Input.Cert, "cert", "", "client certificate for https request")
