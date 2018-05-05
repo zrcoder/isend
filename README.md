@@ -58,9 +58,6 @@ Usage of iSender:
       
   -ca string
     	ca cert for https request
-      
-  -ca string
-    	ca cert for https request
   -cert string
     	client certificate for https request
   -key string
