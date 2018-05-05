@@ -7,7 +7,7 @@ It will be very helpful when you do some benchmark test for your server
 
 or you can build the source code to get the iSender binary fit for your platform. For example, type:
 ```
-go get
+go get github.com/DingHub/iSender
 ```
 and then you will find the binary in directory $GOPATH/bin
 
