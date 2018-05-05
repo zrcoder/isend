@@ -8,7 +8,7 @@ import (
 	"os"
 	"io/ioutil"
 	"encoding/json"
-	"iSender/util"
+	"github.com/DingHub/iSender/util"
 )
 
 var succeeded uint64
