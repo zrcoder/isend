@@ -53,6 +53,12 @@ Usage of iSender:
   -url string
     	url for your request
 
+  -v bool
+      print detail information
+      
+  -ca string
+    	ca cert for https request
+      
   -ca string
     	ca cert for https request
   -cert string
