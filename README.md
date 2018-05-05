@@ -5,7 +5,11 @@ It will be very helpful when you do some benchmark test for your server
 ## Download
 [iSender for Linux](./bin/linux/iSender)<br>
 
-or you can build the source code to get the iSender binary fit for your platform
+or you can build the source code to get the iSender binary fit for your platform. For example, type:
+```
+go get
+```
+and then you will find the binary in directory $GOPATH/bin
 
 ## Examples
 ```
