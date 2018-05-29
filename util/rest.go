@@ -35,7 +35,7 @@ func NewClientWithCaFile(ca string) (*Client, error) {
 	}
 	caContent, err := ioutil.ReadFile(ca)
 	if err != nil {
-		return nil, fmt.Errorf(err.Error())
+		return nil, err
 	}
 	certsCache.Add(ca, caContent)
 	return NewClinetWithCaContent(caContent)
@@ -71,14 +71,14 @@ func NewClientWithCertFiles(ca, cert, key string) (*Client, error) {
 	if certContent, found = certsCache.Search(cert); !found {
 		certContent, err = ioutil.ReadFile(cert)
 		if err != nil {
-			return nil, fmt.Errorf("read client cert failed, %s", err.Error())
+			return nil, err
 		}
 		certsCache.Add(cert, certContent)
 	}
 	if keyContent, found = certsCache.Search(key); !found {
 		keyContent, err = ioutil.ReadFile(key)
 		if err != nil {
-			return nil, fmt.Errorf("read client key failed, %s", err.Error())
+			return nil, err
 		}
 		certsCache.Add(key, keyContent)
 	}
