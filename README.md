@@ -9,7 +9,7 @@ or you can build the source code to get the iSender binary fit for your platform
 ```
 go get github.com/DingHub/iSender
 ```
-and then you will find the binary named "iSender" under $GOPATH/bin/github.com/DingHub/iSender
+and then you will find the binary named "iSender" under $GOPATH/bin/
 
 ## Examples
 ```
