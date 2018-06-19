@@ -38,7 +38,7 @@ const (
   -url string
     	url for your request
 
-  -v bool
+  -v
     	print detail information
 
   -ca string
