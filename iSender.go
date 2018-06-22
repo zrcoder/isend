@@ -10,10 +10,10 @@ import (
 	"encoding/json"
 	"github.com/DingHub/iSender/util"
 )
- 
+
 var succeeded uint64
 var sended uint64
- 
+
 func main() {
 	fmt.Println("Begin-- threads:", util.Input.Threads, ", requests for each thread:", util.Input.Requests)
 	for i := uint64(0); i < util.Input.Threads; i++ {
@@ -24,7 +24,7 @@ func main() {
 	}
 	fmt.Println("End-- sended requests:", atomic.LoadUint64(&sended), ", succeed:", atomic.LoadUint64(&succeeded))
 }
- 
+
 func request4Thread(thread uint64) {
 	var client *util.Client
 	var err error
@@ -43,7 +43,6 @@ func request4Thread(thread uint64) {
 			os.Exit(1)
 		}
 	}
-	body := bytes.NewReader([]byte(util.Input.Body))
 	var headers map[string]string
 	if util.Input.Headers != "" {
 		err = json.Unmarshal([]byte(util.Input.Headers), &headers)
@@ -52,12 +51,13 @@ func request4Thread(thread uint64) {
 			os.Exit(1)
 		}
 	}
-	request, err := util.NewRequest(util.Input.Method, util.Input.Url, body, headers)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
 	for i := uint64(0); i < util.Input.Requests; i++ {
+		body := bytes.NewReader([]byte(util.Input.Body))
+		request, err := util.NewRequest(util.Input.Method, util.Input.Url, body, headers)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 		response, err := client.SendRequest(request)
 		if err == nil {
 			if util.Input.ShowDetail {
@@ -66,6 +66,7 @@ func request4Thread(thread uint64) {
 			} else {
 				fmt.Println("response CODE:", response.StatusCode)
 			}
+			response.Body.Close()
 			atomic.AddUint64(&succeeded, 1)
 		} else {
 			if util.Input.ShowDetail {
