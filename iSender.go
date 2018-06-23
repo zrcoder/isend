@@ -8,11 +8,49 @@ import (
 	"os"
 	"io/ioutil"
 	"encoding/json"
-	"github.com/DingHub/iSender/util"
+	"github.com/DingHub/iSender/util"	
+	"net/http"
 )
 
-var succeeded uint64
-var sended uint64
+var (
+	succeeded uint64
+	sended    uint64
+	client    = initClient()
+	headers   = initHeaders()
+)
+
+func initClient() (client *util.Client) {
+	if util.Input.Ca == "" {
+		client = util.NewClient()
+		return
+	}
+	var err error
+	if util.Input.Cert == "" {
+		client, err = util.NewClientWithCaFile(util.Input.Ca)
+		if err != nil {
+			fmt.Println("create request client with ca faild:", err)
+			os.Exit(1)
+		}
+		return
+	}
+	client, err = util.NewClientWithCertFiles(util.Input.Ca, util.Input.Cert, util.Input.Key)
+	if err != nil {
+		fmt.Println("create request client with certificates faild:", err)
+		os.Exit(1)
+	}
+	return client
+}
+
+func initHeaders() (headers map[string]string) {
+	if util.Input.Headers != "" {
+		err := json.Unmarshal([]byte(util.Input.Headers), &headers)
+		if err != nil {
+			fmt.Println("unmarshal headers failed:", err)
+			os.Exit(1)
+		}
+	}
+	return
+}
 
 func main() {
 	fmt.Println("Begin-- threads:", util.Input.Threads, ", requests for each thread:", util.Input.Requests)
@@ -26,43 +64,14 @@ func main() {
 }
 
 func request4Thread(thread uint64) {
-	var client *util.Client
-	var err error
-	if util.Input.Ca == "" {
-		client = util.NewClient()
-	} else if util.Input.Cert == "" {
-		client, err = util.NewClientWithCaFile(util.Input.Ca)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-	} else {
-		client, err = util.NewClientWithCertFiles(util.Input.Ca, util.Input.Cert, util.Input.Key)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-	}
-	var headers map[string]string
-	if util.Input.Headers != "" {
-		err = json.Unmarshal([]byte(util.Input.Headers), &headers)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-	}
 	for i := uint64(0); i < util.Input.Requests; i++ {
-		body := bytes.NewReader([]byte(util.Input.Body))
-		request, err := util.NewRequest(util.Input.Method, util.Input.Url, body, headers)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
+		request := makeRequest()
 		response, err := client.SendRequest(request)
 		if err == nil {
 			if util.Input.ShowDetail {
 				resBody, _ := ioutil.ReadAll(response.Body)
-				fmt.Printf("[thread %d, request %d] response CODE: %d; respnese BODY: %s\n", thread, i, response.StatusCode, resBody)
+				fmt.Printf("[thread %d, request %d] response CODE: %d; respnese BODY: %s\n",
+					thread, i, response.StatusCode, resBody)
 			} else {
 				fmt.Println("response CODE:", response.StatusCode)
 			}
@@ -70,7 +79,8 @@ func request4Thread(thread uint64) {
 			atomic.AddUint64(&succeeded, 1)
 		} else {
 			if util.Input.ShowDetail {
-				fmt.Printf("[thread %d, request %d] error: %s\n", thread, i, err.Error())
+				fmt.Printf("[thread %d, request %d] error: %s\n",
+					thread, i, err.Error())
 			} else {
 				fmt.Println("error:", err)
 			}
@@ -78,4 +88,16 @@ func request4Thread(thread uint64) {
 		atomic.AddUint64(&sended, 1)
 		time.Sleep(time.Duration(util.Input.Delay) * time.Millisecond)
 	}
+}
+
+// request can't be reused, because after sended, it's body will be clened by http package~
+// so we must make a new request for every send.
+func makeRequest() (request *http.Request) {
+	body := bytes.NewReader([]byte(util.Input.Body))
+	request, err := util.NewRequest(util.Input.Method, util.Input.Url, body, headers)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	return
 }
