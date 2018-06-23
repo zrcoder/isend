@@ -28,7 +28,6 @@ const (
     	number of requests for each thread (default 1)
   -t uint
     	sleep time after each request, unit is millisecond (default 1000)
-
   -H string
     	headers for your request, json format required
   -X string
@@ -37,10 +36,8 @@ const (
     	body for your request
   -url string
     	url for your request
-
   -v
     	print detail information
-
   -ca string
     	ca cert for https request
   -cert string
@@ -51,9 +48,7 @@ const (
 
 func init() {
 	help := false
-	h := false
 	flag.BoolVar(&help, "help", false, "help info")
-	flag.BoolVar(&h, "h", false, "help info")
 
 	flag.Uint64Var(&Input.Threads, "thN", 1, "number of threads")
 	flag.Uint64Var(&Input.Requests, "rN", 1, "number of requests for each thread")
@@ -72,7 +67,7 @@ func init() {
 
 	flag.Parse()
 
-	if help || h {
+	if help || Input.Url == "" {
 		fmt.Println(helpInfo)
 		os.Exit(0)
 	}
