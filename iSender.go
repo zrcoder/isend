@@ -20,13 +20,12 @@ func main() {
 	fmt.Printf("Begin-- threads: %d, requests for each thread: %d\n",
 		util.Input.Threads, util.Input.Requests)
 
-	cashedChans := make(chan uint64, util.Input.Threads)
+	cachedchan := make(chan uint64, util.Input.Threads)
 	for i := uint64(0); i < util.Input.Threads; i++ {
-		go request4Thread(i, cashedChans)
+		go request4Thread(i, cachedchan)
 	}
-	finishedThreads := uint64(0)
-	for finishedThreads < util.Input.Threads {
-		finishedThreads += <-cashedChans
+	// block the main thread util all the goroutines finished
+	for t := uint64(0); t < util.Input.Threads; t += <-cachedchan {
 	}
 
 	fmt.Println("--End")
