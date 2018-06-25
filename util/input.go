@@ -27,7 +27,7 @@ const (
   -rN uint
     	number of requests for each thread (default 1)
   -t uint
-    	sleep time after each request, unit is millisecond (default 1000)
+    	sleep time after each request, unit is millisecond (default 100)
 
   -H string
     	headers for your request, json format required
@@ -55,7 +55,7 @@ func init() {
 
 	flag.Uint64Var(&Input.Threads, "thN", 1, "number of threads")
 	flag.Uint64Var(&Input.Requests, "rN", 1, "number of requests for each thread")
-	flag.Uint64Var(&Input.Delay, "t", 1000, "sleep time after each request, unit is millisecond")
+	flag.Uint64Var(&Input.Delay, "t", 100, "sleep time after each request, unit is millisecond")
 
 	flag.StringVar(&Input.Method, "X", "GET", "method for your request")
 	flag.StringVar(&Input.Url, "url", "", "url for your request")
