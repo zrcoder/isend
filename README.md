@@ -38,7 +38,7 @@ Usage of iSender:
   -rN uint
     	number of requests for each thread (default 1)
   -t uint
-    	sleep time after each request, unit is millisecond (default 1000)
+    	sleep time after each request, unit is millisecond (default 100)
 
   -H string
     	headers for your request, json format required
