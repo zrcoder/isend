@@ -1,5 +1,5 @@
 # iSender
-iSender is a very light tool written in Go, which can imitate to send requests with threads(infact, go routines)<br>
+iSender is a very light tool written in Go, which can imitate to send requests with threads(infact, goroutines)<br>
 It will be very helpful when you do some benchmark test for your server
 
 ## Download
