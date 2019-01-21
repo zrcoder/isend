@@ -2,27 +2,29 @@
 iSender is a very light tool written in Go, which can imitate to send requests with threads(infact, goroutines)<br>
 It will be very helpful when you do some benchmark test for your server
 
-## Download
-[iSender for Linux](./bin/linux/iSender)<br>
-
-or you can build the source code to get the iSender binary fit for your platform. For example, type:
+## install
+you can build the source code to get the iSender binary fit for your platform. For example, type:
 ```
 go get github.com/DingHub/iSender
 ```
-and then you will find the binary named "iSender" under $GOPATH/bin/
+and then you will find the binary named "iSender" under $GOPATH/bin/<br>
+now we can move it to /usr/local/bin for use:
+```
+mv $GOPATH/bin/iSender /usr/local/bin
+```
 
 ## Examples
 ```
-./iSender -url http://localhost:8080/test
+iSender -url http://localhost:8080/test
 ```
 ```
-./iSender -thN 10 -url http://127.0.0.1:8080/test
+iSender -thN 10 -url http://127.0.0.1:8080/test
 ```
 ```
-./iSender -rN 2 -X POST -url http://localhost:8080/test
+iSender -rN 2 -X POST -url http://localhost:8080/test
 ```
 ```
-./iSender -thN 100 -rN 10 -t 1500 -X POST -H '{"Content-Type":"application/json"}' -d '{"someKey":"someValue"}' -url https://localhost:8080/test -ca ./ca.crt -cert ./client.crt -key ./client.key
+iSender -thN 100 -rN 10 -t 1500 -X POST -H '{"Content-Type":"application/json"}' -d '{"someKey":"someValue"}' -url https://localhost:8080/test -ca ./ca.crt -cert ./client.crt -key ./client.key
 ```
 
 ## Usage
