@@ -2,7 +2,7 @@
 iSender is a very light tool written in Go, which can imitate to send requests with threads(infact, goroutines)<br>
 It will be very helpful when you do some benchmark test for your server
 
-## install
+## Install
 you can build the source code to get the iSender binary fit for your platform. For example, type:
 ```
 go get github.com/DingHub/iSender
