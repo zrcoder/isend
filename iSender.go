@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	client    = initClient()
-	headers   = initHeaders()
+	client  = initClient()
+	headers = initHeaders()
 )
 
 func main() {
@@ -34,12 +34,19 @@ func main() {
 func request4Thread(thread uint64, c chan uint64) {
 	for i := uint64(0); i < util.Input.Requests; i++ {
 		request := makeRequest()
+		begin := time.Now()
 		response, err := client.SendRequest(request)
+		end := time.Now()
 		if err == nil {
 			if util.Input.ShowDetail {
 				resBody, _ := ioutil.ReadAll(response.Body)
-				fmt.Printf("[thread %d, request %d] response CODE: %d; response BODY: %s\n",
-					thread, i, response.StatusCode, resBody)
+				fmt.Printf(`[thread %d, request %d]
+<-response CODE: %d
+<-response HEADER: %v
+<-response BODY: %s
+<-time cost: %v
+`,
+					thread, i, response.StatusCode, response.Header, resBody, end.Sub(begin))
 			} else {
 				fmt.Println("response CODE:", response.StatusCode)
 			}
