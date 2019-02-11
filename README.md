@@ -8,7 +8,7 @@ you can build the source code to get the iSender binary fit for your platform. F
 go get github.com/DingHub/iSender
 ```
 and then you will find the binary named "iSender" under $GOPATH/bin/<br>
-now we can move it to /usr/local/bin for use:
+now we can move it to /usr/local/bin for usage:
 ```
 mv $GOPATH/bin/iSender /usr/local/bin
 ```
