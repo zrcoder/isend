@@ -48,7 +48,7 @@ func NewClinetWithCaContent(caContent []byte) (*Client, error) {
 	}
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: false,
+			InsecureSkipVerify: true,
 			RootCAs:            pool,
 		},
 	}
@@ -109,7 +109,7 @@ func NewClientWithCertsContent(caContent, certContent, keyContent []byte) (*Clie
 		TLSClientConfig: &tls.Config{
 			Certificates:       []tls.Certificate{certPair},
 			ClientAuth:         tls.RequireAndVerifyClientCert,
-			InsecureSkipVerify: false,
+			InsecureSkipVerify: true,
 			RootCAs:            pool,
 		},
 	}
