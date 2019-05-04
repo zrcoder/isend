@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-var Input = struct {
+var Input struct {
 	Threads    uint64
 	Requests   uint64
 	Delay      uint64
@@ -18,7 +18,7 @@ var Input = struct {
 	Ca         string
 	Cert       string
 	Key        string
-}{}
+}
 
 const (
 	helpInfo = `Usage of iSender:
