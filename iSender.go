@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/DingHub/iSender/util"	
+	"github.com/zrcoder/iSender/util"	
 	"bytes"
 	"encoding/json"
 	"fmt"
