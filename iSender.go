@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	client *hc.HttpClient
+	client *hc.Client
 )
  
 func main() { 
@@ -63,7 +63,7 @@ func request4Thread(thread uint64, c chan uint64) {
 	c <- 1
 }
  
-func initClient() *hc.HttpClient {
+func initClient() *hc.Client {
 	client := hc.New().InsecureSkipVerify(true)
 	if Input.Ca != "" {
 		client.AddCAFile(Input.Ca)
