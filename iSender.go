@@ -13,8 +13,7 @@ var (
 	client *hc.HttpClient
 )
  
-func main() {
- 
+func main() { 
 	client = initClient()
  
 	fmt.Printf("Begin-- threads: %d, requests for each thread: %d\n",
