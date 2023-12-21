@@ -5,14 +5,9 @@ It will be very helpful when you do some benchmark test for your server
 ## Install
 you can build the source code to get the iSender binary fit for your platform. For example, type:
 ```
-go get github.com/zrcoder/iSender
+go install github.com/zrcoder/iSender@latest
 ```
-and then you will find the binary named "iSender" under $GOPATH/bin/<br>
-now we can move it to /usr/local/bin for usage:
 ```
-mv $GOPATH/bin/iSender /usr/local/bin
-```
-
 ## Examples
 ```
 iSender -url http://localhost:8080/test
