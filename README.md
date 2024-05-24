@@ -1,66 +1,59 @@
-# iSender
-iSender is a very light tool written in Go, which can imitate to send requests with threads(infact, goroutines)<br>
+# isend
+isend is a light tool written in Go, which can imitate to send requests with threads(infact, goroutines)
+
 It will be very helpful when you do some benchmark test for your server
 
 ## Install
-you can build the source code to get the iSender binary fit for your platform. For example, type:
 
 ```
-go install github.com/zrcoder/iSender@latest
+go install github.com/zrcoder/isend@latest
 ```
 
 ## Examples
 
 ```
-iSender -url http://localhost:8080/test
+isend  http://localhost:8080/test
 ```
 
 ```
-iSender -thN 10 -url http://127.0.0.1:8080/test
+isend -vus 10 http://127.0.0.1:8080/test
 ```
 
 ```
-iSender -rN 2 -X POST -url http://localhost:8080/test
+isend -nun 2 -X POST -url http://localhost:8080/test
 ```
 
 ```
-iSender -thN 100 -rN 10 -t 1500 -X POST -H '{"Content-Type":"application/json"}' -d '{"someKey":"someValue"}' -url https://localhost:8080/test -ca ./ca.crt -cert ./client.crt -key ./client.key
+isend -vus 100 -num 10 -X POST -H 'Content-Type: application/json' -d '{"someKey":"someValue"}' -ca ca.crt -cert client.crt -key client.key https://localhost:8080/test 
 ```
 
 ## Usage
-You can type this line for help:
+Type `isend` for help, and you will see something like below:
 
 ```
-./iSender --help
-```
+NAME:
+   isend - send requests for benchmark test
 
-and you will see something like below:
+USAGE:
+   isend -v https://test.com
 
-```
-Usage of iSender:
-  -thN uint
-     	number of threads (default 1)
-  -rN uint
-    	number of requests for each thread (default 1)
-  -t uint
-    	sleep time after each request, unit is millisecond (default 100)
+GLOBAL OPTIONS:
+   -v  print detail information (default: false)
 
-  -H string
-    	headers for your request, json format required
-  -X string
-    	method for your request (default "GET")
-  -d string
-    	body for your request
-  -url string
-    	url for your request
+   1. COMMON
 
-  -v
-      print detail information
-      
-  -ca string
-    	ca cert for https request
-  -cert string
-    	client certificate for https request
-  -key string
-    	client private certificate key for https request
+   --num uint  number of requests for each user uint (default: 1)
+   --vus uint  virtual users uint (default: 1)
+
+   2. REQUEST
+
+   -H 'key: value' [ -H 'key: value' ]  headers like 'key: value'
+   -X string, --method string           method string (default: "GET")
+   -d string, --body string             body string
+
+   3. CERTIFICATES
+
+   --ca FILE    ca cert FILE for https request
+   --cert FILE  client certificate FILE for https request
+   --key FILE   client private certificate key FILE for https request
 ```
