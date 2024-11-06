@@ -57,3 +57,6 @@ GLOBAL OPTIONS:
    --cert FILE  client certificate FILE for https request
    --key FILE   client private certificate key FILE for https request
 ```
+
+## Reference
+https://github.com/adjust/go-wrk
