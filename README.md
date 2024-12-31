@@ -59,4 +59,5 @@ GLOBAL OPTIONS:
 ```
 
 ## Reference
-https://github.com/adjust/go-wrk
+- https://github.com/adjust/go-wrk
+- https://github.com/tsenart/vegeta
